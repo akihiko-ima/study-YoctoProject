@@ -82,10 +82,28 @@ VIRTUAL-RUNTIME_init_manager = "systemd"
 DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
 VIRTUAL-RUNTIME_initscripts = ""
 
+IMAGE_INSTALL:append = " \
+    systemd-bootchart \
+    openssh vim \
+    libgpiod-tools i2c-tools minicom \
+    lsb-release file which tree \
+    connman connman-client \
+    kernel-devsrc git cmake \
+    python3 python3-pip \
+    python3-setuptools python3-wheel \
+"
+
+EXTRA_IMAGE_FEATURES ?= "debug-tweaks tools-sdk dev-pkgs tools-debug"
 
 # Accept for the synaptics license
 LICENSE_FLAGS_ACCEPTED = "synaptics-killswitch"
 ```
+
+- 補足 `IMAGE_INSTALL:append = " ... "`</br>
+  追加でインストールするパッケージ群を指定します。</br>
+  例: systemd-bootchart, openssh, vim, python3 python3-pip 各種開発ツールなど。</br>
+
+
 ### 4_Linuxイメージの構築
 - ビルドに必要なソースをダウンロードだけ実施</br>
   **ビルド時のネットワークトラブル回避可能**
@@ -96,6 +114,9 @@ bitbake core-image-base --runall=fetch
 ```bash
 bitbake core-image-base
 ```
+
+- 成果物の出力パス</br>
+  ビルド後のイメージファイルやbmapファイルの保存場所（例: build/tmp/deploy/images/raspberrypi4-64/）
 
 ### 5_SDに書き込み
 - すでに書き込みデータがある場合
